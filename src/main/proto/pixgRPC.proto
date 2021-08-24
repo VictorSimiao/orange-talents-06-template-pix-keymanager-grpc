@@ -10,6 +10,10 @@ package br.com.zup.edu;
 service RegistraChaveService {
   rpc registra(RegistroChaveRequest) returns (RegistroChaveResponse) {}
 }
+service RemoveChaveService{
+  rpc remove(RemoveChaveRequest) returns (RemoveChaveResponse){}
+}
+
 
 enum TipoChave {
   INDETERMINADA    = 0;
@@ -23,7 +27,9 @@ enum TipoConta {
   CONTA_CORRENTE         = 1;
   CONTA_POUPANCA         = 2;
 }
-
+/**
+  Registra chave
+ */
 message RegistroChaveRequest {
   string    clienteId    = 1;
   TipoChave tipoChave   = 2;
@@ -32,6 +38,19 @@ message RegistroChaveRequest {
 }
 
 message RegistroChaveResponse {
+  string clienteId   = 1;
+  string pixId       = 2;
+}
+
+/**
+  Remove Chave
+ */
+message RemoveChaveRequest{
+  string clienteId   = 1;
+  string pixId       = 2;
+}
+
+message RemoveChaveResponse{
   string clienteId   = 1;
   string pixId       = 2;
 }
