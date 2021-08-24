@@ -1,4 +1,4 @@
-package br.com.zup.edu.pix.registra
+package br.com.zup.edu.pix.endponts.registra
 
 import br.com.zup.edu.RegistraChaveServiceGrpc
 import br.com.zup.edu.RegistroChaveRequest
@@ -15,7 +15,6 @@ import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import javax.validation.ConstraintViolationException
 
 @Singleton
 class RegistraChaveEndpont(@Inject private val service: NovaChavePixService) :
@@ -32,7 +31,7 @@ class RegistraChaveEndpont(@Inject private val service: NovaChavePixService) :
             responseObserver.onNext(
                 RegistroChaveResponse.newBuilder()
                     .setClienteId(novaChave.clienteId.toString())
-                    .setPixId(novaChave.chave)
+                    .setPixId(novaChave.id.toString())
                     .build()
             )
             responseObserver.onCompleted()
