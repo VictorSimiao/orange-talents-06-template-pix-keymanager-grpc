@@ -7,6 +7,7 @@ import br.com.zup.edu.pix.chave.NovaChavePixService
 import br.com.zup.edu.pix.exceptions.ArgumentoDeEntradaException
 import br.com.zup.edu.pix.extension.toModel
 import br.com.zup.edu.pix.exceptions.ChavePixExistenteException
+import br.com.zup.edu.pix.exceptions.ClienteNaoEncontradoException
 
 
 import io.grpc.Status
@@ -43,16 +44,16 @@ class RegistraChaveEndpont(@Inject private val service: NovaChavePixService) :
                     .withCause(ex.cause)
                     .asRuntimeException()
             )
-        } catch (ex: ArgumentoDeEntradaException ) {
+        } catch (ex: ArgumentoDeEntradaException) {
             responseObserver.onError(
                 Status.INVALID_ARGUMENT
                     .withDescription(ex.message)
                     .withCause(ex.cause)
                     .asRuntimeException()
             )
-        }catch (ex: ConstraintViolationException){
+        } catch (ex: ClienteNaoEncontradoException) {
             responseObserver.onError(
-                Status.INVALID_ARGUMENT
+                Status.FAILED_PRECONDITION
                     .withDescription(ex.message)
                     .withCause(ex.cause)
                     .asRuntimeException()
@@ -60,3 +61,5 @@ class RegistraChaveEndpont(@Inject private val service: NovaChavePixService) :
         }
     }
 }
+
+
