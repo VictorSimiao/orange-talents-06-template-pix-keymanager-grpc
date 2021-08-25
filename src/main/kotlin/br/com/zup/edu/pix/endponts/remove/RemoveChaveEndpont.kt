@@ -1,11 +1,10 @@
 package br.com.zup.edu.pix.endponts.remove
 
-import br.com.zup.edu.RegistroChaveResponse
+
 import br.com.zup.edu.RemoveChaveRequest
 import br.com.zup.edu.RemoveChaveResponse
 import br.com.zup.edu.RemoveChaveServiceGrpc
 import br.com.zup.edu.pix.chave.RemoveChaveService
-import br.com.zup.edu.pix.exceptions.ArgumentoDeEntradaException
 import br.com.zup.edu.pix.exceptions.ChavePixNaoEncontradaException
 import br.com.zup.edu.pix.extension.toModel
 import io.grpc.Status
@@ -20,6 +19,7 @@ class RemoveChaveEndpont(@Inject private val service: RemoveChaveService) :
 
     override fun remove(request: RemoveChaveRequest, responseObserver: StreamObserver<RemoveChaveResponse>) {
         try {
+
             val dtoChaveRemove = request.toModel()
             service.remove(dtoChaveRemove)
 

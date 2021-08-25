@@ -51,7 +51,7 @@ class RegistraChaveEndpontTest(
     }
 
     @MockBean(ContasNoItauClient::class)
-    fun itauClien(): ContasNoItauClient? {
+    fun itauClient(): ContasNoItauClient? {
         return Mockito.mock(ContasNoItauClient::class.java)
     }
 
@@ -147,7 +147,7 @@ class RegistraChaveEndpontTest(
         val thrown = assertThrows<StatusRuntimeException> {
             grpcClient.registra(chaveRequest.build())
         }
-        //Vvlidação
+        //Validação
         with(thrown) {
             assertEquals(Status.FAILED_PRECONDITION.code, status.code)
             assertEquals("Cliente não encontrado no Itau", status.description)
