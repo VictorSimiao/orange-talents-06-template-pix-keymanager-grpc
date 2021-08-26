@@ -2,6 +2,12 @@ package br.com.zup.edu.pix.chave
 
 import br.com.zup.edu.TipoChave
 import br.com.zup.edu.TipoConta
+import br.com.zup.edu.pix.client.bcb.dtos.BankAccount
+import br.com.zup.edu.pix.client.bcb.dtos.CreatePixKeyRequest
+import br.com.zup.edu.pix.client.bcb.dtos.Owner
+import br.com.zup.edu.pix.client.bcb.dtos.enums.AccountType
+import br.com.zup.edu.pix.client.bcb.dtos.enums.OwnerType
+import br.com.zup.edu.pix.client.bcb.dtos.enums.PixKeyType
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
@@ -25,7 +31,7 @@ class ChavePix(
     @field:NotBlank
     @field:Size(max = 77)
     @Column(unique = true, nullable = false)
-    val chave: String,
+    var chave: String,
 
     @field:Valid
     @Embedded
@@ -37,7 +43,7 @@ class ChavePix(
     val tipoConta: TipoConta,
 
 
-) {
+    ) {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -45,5 +51,35 @@ class ChavePix(
 
     @Column(nullable = false)
     @field:NotNull
-    val criadaEm:LocalDateTime = LocalDateTime.now()
+    val criadaEm: LocalDateTime = LocalDateTime.now()
+
+    fun toPixKeyRequest(): CreatePixKeyRequest {
+        return CreatePixKeyRequest(
+            keyType = PixKeyType.by(this.tipo),
+            key = this.chave,
+            bankAccount = BankAccount(
+                participant = ContaAssociada.ITAU_UNIBANCO_ISPB,
+                branch = this.contaAssociada.agencia,
+                accountNumber = this.contaAssociada.numeroDaConta,
+                accountType = AccountType.by(this.tipoConta)
+            ),
+            owner = Owner(
+                type = OwnerType.NATURAL_PERSON,
+                name = this.contaAssociada.nomeDoTitular,
+                taxIdNumber = this.contaAssociada.cpfDoTitular
+            )
+        )
+    }
+
+    fun isAleatoria(): Boolean {
+        return tipo == TipoChave.ALEATORIA
+    }
+
+    fun atualiza(chave: String): Boolean {
+        if (isAleatoria()) {
+            this.chave = chave
+            return true
+        }
+        return false
+    }
 }

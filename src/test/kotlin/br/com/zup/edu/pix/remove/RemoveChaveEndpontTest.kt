@@ -45,7 +45,7 @@ class RemoveChaveEndpontTest(
         chave = "victor@gmail.com",
         contaAssociada = ContaAssociada(
             instituicao = "UNIBANCO ITAU SA",
-            nomeDoTitulo = "Victor Simiao",
+            nomeDoTitular = "Victor Simiao",
             cpfDoTitular = "83364378860",
             agencia = "0001",
             numeroDaConta = "098765"

@@ -16,7 +16,7 @@ class ContaAssociada(
 
     @field:NotBlank
     @Column(nullable = false)
-    val nomeDoTitulo: String,
+    val nomeDoTitular: String,
 
     @field:NotBlank
     @field:Pattern(regexp = "[0-9]{11}")

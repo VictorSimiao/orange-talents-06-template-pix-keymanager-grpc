@@ -7,7 +7,7 @@ import br.com.zup.edu.TipoConta
 import br.com.zup.edu.pix.chave.ChavePix
 import br.com.zup.edu.pix.chave.ChavePixRepository
 import br.com.zup.edu.pix.chave.ContaAssociada
-import br.com.zup.edu.pix.client.ContasNoItauClient
+import br.com.zup.edu.pix.client.itau.ContasNoItauClient
 import br.com.zup.edu.pix.client.DadosDaContaResponse
 import br.com.zup.edu.pix.client.InstituicaoResponse
 import br.com.zup.edu.pix.client.TitularResponse
@@ -75,7 +75,7 @@ class RegistraChaveEndpontTest(
         chave = "victor@gmail.com",
         contaAssociada = ContaAssociada(
             instituicao = "UNIBANCO ITAU SA",
-            nomeDoTitulo = "Victor Simiao",
+            nomeDoTitular = "Victor Simiao",
             cpfDoTitular = "83364378860",
             agencia = "0001",
             numeroDaConta = "098765"

@@ -12,7 +12,7 @@ data class DadosDaContaResponse(
     fun toModel():ContaAssociada{
         return ContaAssociada(
             instituicao = this.instituicao.nome,
-            nomeDoTitulo = this.titular.nome,
+            nomeDoTitular = this.titular.nome,
             cpfDoTitular = this.titular.cpf,
             agencia = agencia,
             numeroDaConta = this.numero

@@ -1,15 +1,14 @@
 package br.com.zup.edu.pix.chave
 
-import br.com.zup.edu.pix.chave.ChavePix
-import br.com.zup.edu.pix.chave.ChavePixRepository
-import br.com.zup.edu.pix.chave.NovaChavePix
-import br.com.zup.edu.pix.client.ContasNoItauClient
+import br.com.zup.edu.pix.client.bcb.BancoCentralClient
+import br.com.zup.edu.pix.client.bcb.dtos.CreatePixKeyRequest
+import br.com.zup.edu.pix.client.itau.ContasNoItauClient
 import br.com.zup.edu.pix.exceptions.ChavePixExistenteException
 import br.com.zup.edu.pix.exceptions.ClienteNaoEncontradoException
+import io.micronaut.http.HttpStatus
 import io.micronaut.validation.Validated
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
-import java.lang.IllegalStateException
 import javax.transaction.Transactional
 
 import javax.validation.Valid
@@ -18,7 +17,8 @@ import javax.validation.Valid
 @Singleton
 class NovaChavePixService(
     @Inject val chavePixRepository: ChavePixRepository,
-    @Inject val itauClient: ContasNoItauClient
+    @Inject val itauClient: ContasNoItauClient,
+    @Inject val bcbClient: BancoCentralClient
 ) {
 
     @Transactional
@@ -33,6 +33,13 @@ class NovaChavePixService(
 
         val chavePix = novaChavePix.toModel(contaAssociada)
         chavePixRepository.save(chavePix)
+
+        val bcbPixKeyResponse = bcbClient.registraChave(chavePix.toPixKeyRequest())
+        if(bcbPixKeyResponse.status !=HttpStatus.CREATED){
+            throw IllegalStateException("Falha ao registrar chave pix no Banco Central do Brasil")
+        }
+        //Caso a chave seja aleatoria ela será atualizada pela chave gerada no BCB
+        chavePix.atualiza(bcbPixKeyResponse.body()!!.key)
 
         return chavePix
     }
