@@ -6,6 +6,7 @@ import br.com.zup.edu.RemoveChaveResponse
 import br.com.zup.edu.RemoveChaveServiceGrpc
 import br.com.zup.edu.pix.chave.RemoveChaveService
 import br.com.zup.edu.pix.exceptions.ChavePixNaoEncontradaException
+import br.com.zup.edu.pix.exceptions.PreCondicaoException
 import br.com.zup.edu.pix.extension.toModel
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
@@ -47,6 +48,13 @@ class RemoveChaveEndpont(@Inject private val service: RemoveChaveService) :
         }catch (ex: IllegalArgumentException) {
             responseObserver.onError(
                 Status.INVALID_ARGUMENT
+                    .withDescription(ex.message)
+                    .withCause(ex.cause)
+                    .asRuntimeException()
+            )
+        }catch (ex: PreCondicaoException) {
+            responseObserver.onError(
+                Status.FAILED_PRECONDITION
                     .withDescription(ex.message)
                     .withCause(ex.cause)
                     .asRuntimeException()

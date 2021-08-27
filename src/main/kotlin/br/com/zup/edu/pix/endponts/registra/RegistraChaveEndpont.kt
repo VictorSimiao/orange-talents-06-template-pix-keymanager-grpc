@@ -8,12 +8,12 @@ import br.com.zup.edu.pix.exceptions.ArgumentoDeEntradaException
 import br.com.zup.edu.pix.extension.toModel
 import br.com.zup.edu.pix.exceptions.ChavePixExistenteException
 import br.com.zup.edu.pix.exceptions.ClienteNaoEncontradoException
+import br.com.zup.edu.pix.exceptions.PreCondicaoException
 
 
 import io.grpc.Status
 
 import io.grpc.stub.StreamObserver
-import io.micronaut.http.client.exceptions.HttpClientResponseException
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 
@@ -51,10 +51,17 @@ class RegistraChaveEndpont(@Inject private val service: NovaChavePixService) :
                     .withCause(ex.cause)
                     .asRuntimeException()
             )
-        } catch (ex: HttpClientResponseException) {
+        } catch (ex: ClienteNaoEncontradoException) {
             responseObserver.onError(
                 Status.FAILED_PRECONDITION
-                    .withDescription("Id do cliente não foi encontrado")
+                    .withDescription(ex.message)
+                    .withCause(ex.cause)
+                    .asRuntimeException()
+            )
+        }catch (ex: PreCondicaoException) {
+            responseObserver.onError(
+                Status.FAILED_PRECONDITION
+                    .withDescription(ex.message)
                     .withCause(ex.cause)
                     .asRuntimeException()
             )

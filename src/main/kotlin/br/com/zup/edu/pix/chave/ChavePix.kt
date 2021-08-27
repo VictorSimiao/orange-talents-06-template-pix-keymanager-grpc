@@ -28,7 +28,7 @@ class ChavePix(
     @Column(nullable = false)
     val tipo: TipoChave,
 
-    @field:NotBlank
+
     @field:Size(max = 77)
     @Column(unique = true, nullable = false)
     var chave: String,
