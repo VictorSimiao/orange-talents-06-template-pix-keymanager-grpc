@@ -6,12 +6,17 @@ option java_outer_classname = "Pix";
 option objc_class_prefix = "HLW";
 
 package br.com.zup.edu;
+import "google/protobuf/timestamp.proto";
 
 service RegistraChaveService {
   rpc registra(RegistroChaveRequest) returns (RegistroChaveResponse) {}
 }
 service RemoveChaveService{
   rpc remove(RemoveChaveRequest) returns (RemoveChaveResponse){}
+}
+
+service CarregaChaveService{
+  rpc carrega(CarregaChavePixRequest) returns (CarregaChavePixResponse){}
 }
 
 
@@ -53,4 +58,42 @@ message RemoveChaveRequest{
 message RemoveChaveResponse{
   string clienteId   = 1;
   string pixId       = 2;
+}
+
+/**
+  Carrega Chave
+ */
+message CarregaChavePixRequest {
+
+  message FiltroPorPixId {
+    string clienteId   = 1;
+    string pixId       = 2;
+  }
+  oneof filtro{
+    FiltroPorPixId pixId    = 1;
+    string chave            = 2;
+  }
+
+}
+
+message CarregaChavePixResponse {
+  message ChavePix{
+
+    message ContaInfo {
+      TipoConta tipo        = 1;
+      string instituicao    = 2;
+      string nomeDoTitular  = 3;
+      string cpfDoTitular   = 4;
+      string agencia        = 5;
+      string numeroDaConta  = 6;
+    }
+
+    TipoChave tipo                     = 1;
+    string chave                       = 2;
+    ContaInfo conta                    = 3;
+    google.protobuf.Timestamp criadaEm = 4;
+  }
+  string clienteId   = 1;
+  string pixId       = 2;
+  ChavePix chave     = 3;
 }

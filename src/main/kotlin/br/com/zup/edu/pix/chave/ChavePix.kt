@@ -82,4 +82,8 @@ class ChavePix(
         }
         return false
     }
+
+    fun pertenceAo(clienteId: UUID): Boolean {
+        return this.clienteId.equals(clienteId)
+    }
 }

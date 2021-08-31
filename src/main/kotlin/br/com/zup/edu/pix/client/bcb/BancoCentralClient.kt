@@ -2,10 +2,7 @@ package br.com.zup.edu.pix.client.bcb
 
 
 
-import br.com.zup.edu.pix.client.bcb.dtos.CreatePixKeyRequest
-import br.com.zup.edu.pix.client.bcb.dtos.CreatePixKeyResponse
-import br.com.zup.edu.pix.client.bcb.dtos.DeletePixKeyRequest
-import br.com.zup.edu.pix.client.bcb.dtos.DeletePixKeyResponse
+import br.com.zup.edu.pix.client.bcb.dtos.*
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
@@ -27,6 +24,10 @@ interface BancoCentralClient {
         consumes = [MediaType.APPLICATION_XML]
     )
     fun deletaChave(@PathVariable key: String, @Body request: DeletePixKeyRequest): HttpResponse<DeletePixKeyResponse>
+
+    @Get("/api/v1/pix/keys/{key}",
+        consumes = [MediaType.APPLICATION_XML])
+    fun findByKey(@PathVariable key: String): HttpResponse<PixKeyDetailsResponse>
 
 
 
