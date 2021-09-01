@@ -39,7 +39,14 @@ class CarregaChaveEndpont(
             )
         }catch (ex: ConstraintViolationException) {
             responseObserver.onError(
-                Status.FAILED_PRECONDITION
+                Status.INVALID_ARGUMENT
+                    .withDescription(ex.message)
+                    .withCause(ex.cause)
+                    .asRuntimeException()
+            )
+        }catch (ex: IllegalArgumentException) {
+            responseObserver.onError(
+                Status.INVALID_ARGUMENT
                     .withDescription(ex.message)
                     .withCause(ex.cause)
                     .asRuntimeException()
