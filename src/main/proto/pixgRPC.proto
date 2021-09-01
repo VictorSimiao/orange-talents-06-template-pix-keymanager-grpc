@@ -19,6 +19,9 @@ service CarregaChaveService{
   rpc carrega(CarregaChavePixRequest) returns (CarregaChavePixResponse){}
 }
 
+service ListaChaveService{
+  rpc lista (ListaChavePixRequest) returns (ListaChavePixResponse){}
+}
 
 enum TipoChave {
   INDETERMINADA    = 0;
@@ -96,4 +99,25 @@ message CarregaChavePixResponse {
   string clienteId   = 1;
   string pixId       = 2;
   ChavePix chave     = 3;
+
+}
+
+/**
+  Lista Chave
+ */
+
+message ListaChavePixRequest{
+  string clienteId = 1;
+}
+message ListaChavePixResponse{
+
+  message ChavePix{
+    string pixId                       = 1;
+    TipoChave tipo                     = 2;
+    string chave                       = 3;
+    TipoConta tipoConta                = 4;
+    google.protobuf.Timestamp criadaEm = 5;
+  }
+  string clienteId         = 1;
+  repeated ChavePix chaves = 2;
 }
